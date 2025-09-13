@@ -1,13 +1,15 @@
-from secretkey import openapi_key
+from secretkey import gemini_api_key
 import os
-os.environ["OPENAI_API_KEY"] = openapi_key
 
-# ✅ Use the new import
-from langchain_openai import OpenAI  
+# Set environment variable for Gemini
+os.environ["GOOGLE_API_KEY"] = gemini_api_key
 
-# Create LLM
-llm = OpenAI(temperature=0.9)
+# Import Gemini LLM from LangChain
+from langchain_google_genai import ChatGoogleGenerativeAI
 
-# ✅ Instead of calling like a function, use .invoke()
-name = llm.invoke("I want to open a restaurant for Indian food. Give me a name for it.")
-print(name)
+# Initialize Gemini model
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.9)
+
+# Ask Gemini a question
+response = llm.invoke("Give me only ONE short name for an Indian restaurant, nothing else.")
+print(response.content)
