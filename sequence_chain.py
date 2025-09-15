@@ -37,7 +37,7 @@ prompt = PromptTemplate_name.format(cuisine="Indian")
 response = llm.invoke(prompt)
 
 
-name_chain = LLMChain(llm=llm, prompt=PromptTemplate_name)
+name_chain = LLMChain(llm=llm, prompt=PromptTemplate_name,output_key="restaurant_name")
 
 prompt_template_items = PromptTemplate(
     input_variables=["restaurant_name"],
@@ -45,9 +45,15 @@ prompt_template_items = PromptTemplate(
 )
 
 # simple sequence chain
-food_chain = LLMChain(llm=llm, prompt=prompt_template_items)
+food_chain = LLMChain(llm=llm, prompt=prompt_template_items,output_key="menu_items")
 
-from langchain.chains import SimpleSequentialChain
-sequential_chain = SimpleSequentialChain(chains=[name_chain, food_chain])
-response = sequential_chain.run("Indian")
-print(response)
+from langchain.chains import SequentialChain
+sequential_chain = SequentialChain(
+    chains=[name_chain, food_chain],
+    input_variables=["cuisine"],
+    output_variables=["restaurant_name","menu_items"]
+)
+
+output = sequential_chain({"cuisine": "Indian"})
+print(output)
+
