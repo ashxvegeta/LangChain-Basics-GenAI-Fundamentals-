@@ -1,5 +1,8 @@
 from secretkey import gemini_api_key
 import os
+# Set environment variable for OpenAI (if using GPT models)
+# from secretkey import openai_api_key
+# os.environ["OPENAI_API_KEY"] = openai_api_key
 
 # Set environment variable for Gemini
 os.environ["GOOGLE_API_KEY"] = gemini_api_key
@@ -9,6 +12,11 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import LLMChain
 # Initialize Gemini model
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.6)
+# for gpt-4o-mini
+# from langchain_openai import ChatOpenAI
+# llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.6)
+
+
 
 # Ask Gemini a question
 response = llm.invoke("Give me only ONE short name for an Indian restaurant, nothing else.")
