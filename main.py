@@ -7,6 +7,11 @@ os.environ["GOOGLE_API_KEY"] = gemini_api_key
 # Import Gemini LLM from LangChain
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import LLMChain
+# Create memory
+memory = ConversationBufferMemory()
+
 # Initialize Gemini model
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.6)
 
@@ -37,9 +42,10 @@ prompt_template_items = PromptTemplate(
 )
 
 # simple sequence chain
-food_chain = LLMChain(llm=llm, prompt=prompt_template_items)
+food_chain = LLMChain(llm=llm, prompt=prompt_template_items, memory=memory)
 
 from langchain.chains import SimpleSequentialChain
 sequential_chain = SimpleSequentialChain(chains=[name_chain, food_chain])
 response = sequential_chain.run("Indian")
 print(response)
+print(memory.buffer) # Print the conversation history
