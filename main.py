@@ -8,6 +8,8 @@ os.environ["GOOGLE_API_KEY"] = gemini_api_key
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationChain
+from  langchain.chains import ConversationChain
 from langchain.chains import LLMChain
 # Create memory
 memory = ConversationBufferMemory()
@@ -49,3 +51,13 @@ sequential_chain = SimpleSequentialChain(chains=[name_chain, food_chain])
 response = sequential_chain.run("Indian")
 print(response)
 print(memory.buffer) # Print the conversation history
+
+
+conversation = ConversationChain(llm=llm, memory=memory)
+response = conversation.run("who win frst cricket world cup.")
+print(response)
+
+response = conversation.run("where it held?")
+print(response)
+
+conversation.memory
